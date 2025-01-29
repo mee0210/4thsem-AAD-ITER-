@@ -1,0 +1,75 @@
+package aad2prog;
+import java.util.*;
+public class DFS1 {
+	
+	
+	 
+	 private Vector<Integer> discoveredTime;
+	   private Vector<Integer> finishedTime;
+	    private Vector<Integer> parent;
+	    private Vector<String> colour;
+	    private Vector<Integer> g[];
+	    private int vertexCount;
+	    private HashSet<Integer> vertices;
+	    private int time;
+	 public DFS1(int cnt) {
+	 this.vertexCount =cnt;
+	 //this.vertexCount = vertexCount;
+	    discoveredTime = new Vector<>();
+	    finishedTime = new Vector<>();
+	    parent = new Vector<>();
+	    colour = new Vector<>();
+	    discoveredTime.setSize(vertexCount);
+	    finishedTime.setSize(vertexCount);
+	    parent.setSize(vertexCount);
+	    colour.setSize(vertexCount);
+	    g = new   Vector[  vertexCount  ];
+	    vertices = new HashSet<>();
+	    for (int i = 0; i < vertexCount; i++)
+	         g[i] = new Vector<>();
+	 }
+	 private void addEdge(int source, int destination) {
+	        g[source].add(destination);
+	        vertices.add(source);
+	        vertices.add(destination);
+	 }
+	 private void dfs2() {
+	        Collections.fill(parent, null);
+	        Collections.fill(discoveredTime, Integer.MAX_VALUE);
+	        Collections.fill(colour, "white");
+	        colour.set(0, "grey");
+	        time = 0;
+	        for (int i = 0; i < vertexCount; i++)
+	            if (colour.get(i).equals("white"))
+	                dfsVisit(i);
+	    }
+	 private void dfsVisit(int u) {
+	        //System.out.print(u+" ");
+	        time = time + 1;
+	        discoveredTime.set(u, time);
+	        colour.set(u, "grey");
+	        for (int v : g[u]) {
+	            if (colour.get(v).equals("white")) {
+	                parent.set(v, u);
+	                dfsVisit(v);
+	            }
+	        }
+	        colour.set(u, "black");
+	        time = time + 1;
+	        finishedTime.set(u, time);
+	        System.out.print(u+" ");
+	    }
+	 public static void main(String[] args) {
+	 DFS1 d = new DFS1(7);
+	        d.addEdge(2, 1);
+	        d.addEdge(1, 3);
+	        d.addEdge(3, 5);
+	        d.addEdge(3, 2);
+	        d.addEdge(5, 4);
+	        d.addEdge(5, 6);
+	        d.addEdge(4, 6);
+	        d.addEdge(2, 4);
+	        d.dfs2();
+	 }
+	 
+}
