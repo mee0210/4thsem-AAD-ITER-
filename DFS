@@ -1,0 +1,101 @@
+package aad2prog;
+	 import java.io.*;
+	 import java.util.*;
+	 public class DFS {
+	 int count;
+	 private
+	 LinkedList<LinkedList<Edge>> Adj;
+	 private
+	 static class Edge {
+	 private int dest;
+	 private int cost;
+	 public Edge(int dst, int cst) {
+	 dest = dst;
+	 cost = cst;
+	 }
+	 }
+	 public DFS(int cnt) {
+	 count = cnt;
+	 Adj = new LinkedList<LinkedList<Edge>>();
+	 for (int i = 0; i < cnt; i++) {
+	 Adj.add(new LinkedList<Edge>());
+	 }
+	 }
+	 private void addDirectedEdge(int source, int dest, int cost) {
+	 Edge edge = new Edge(dest, cost);
+	 Adj.get(source).add(edge);
+	 }
+	 public void addDirectedEdge(int source,int dest) {
+	 addDirectedEdge(source, dest, 1);
+	 }
+	 public void addUndirectedEdge(int source, int dest,int cost) {
+	 addDirectedEdge(source, dest, cost);
+	 addDirectedEdge(dest, source, cost);
+	 }
+	 public void addUndirectedEdge(int source, int dest) {
+	 addUndirectedEdge(source, dest, 1);
+	 }
+	public void print() {
+	 for (int i = 0; i < count; i++) {
+	 LinkedList<Edge> ad = Adj.get(i);
+	 System.out.print("\n Vertex " + i + " is connected to: ");
+	 for (Edge adn:ad) {
+	 System.out.print("(" + adn.dest + ", " + adn.cost + ") ");
+	 }
+	 }
+	 System.out.println(" ");
+	 }
+	 public static boolean traversal(DFS gph, int source, int target) {
+	 int count = gph.count;
+	 boolean[] visited = new boolean[count];
+	 Stack<Integer>
+	 stk = new Stack<Integer>();
+	 stk.push(source);
+	 visited[source] = true;
+	 while (stk.isEmpty() == false){
+	 int curr =stk.pop();
+	 LinkedList<Edge> adl = gph.Adj.get(curr);
+	 for (Edge adn: adl) {
+	 if (visited[adn.dest] == false) {
+	 visited[adn.dest] = true;
+	 System.out.print("(" + adn.dest +")");
+	 stk.push(adn.dest);
+	 }
+	 }
+	 }
+	 System.out.println(" ");
+	 return
+	 visited[target];
+	 }
+	
+	 public static boolean rtraversal(DFS gph, int source, int target) {
+	 int count = gph.count;
+	 boolean[] visited = new boolean[count];
+	 dfsVisit(gph, source, visited);
+	 return visited[target];
+	 }
+	 public static void dfsVisit(DFS gph,int index, boolean[] visited) {
+	 visited[index] = true;
+	 LinkedList<Edge> adl = gph.Adj.get(index);
+	 for (Edge adn:adl) {
+	if(visited[adn.dest] == false)
+	 //dfsUtil(gph, adn.dest, visited);
+	 System.out.print("(" + adn.dest + ") ");
+	 dfsVisit(gph, adn.dest, visited);
+	 }
+	 }
+	 public static void main(String[] args) {
+	 DFS gph = new DFS(5);
+	 gph.addDirectedEdge(0, 1, 1);
+	 gph.addDirectedEdge(0, 4, 1);
+	 gph.addDirectedEdge(1, 2, 1);
+	 gph.addDirectedEdge(2, 3, 1);
+	 gph.addDirectedEdge(4, 1, 1);
+	 gph.addDirectedEdge(4, 3, 1);
+	 gph.print();
+	 gph.traversal(gph, 0, 3);
+	 gph.rtraversal(gph, 0, 3);
+	 }
+	 }
+
+
